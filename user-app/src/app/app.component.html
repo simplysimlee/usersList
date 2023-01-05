@@ -1,0 +1,34 @@
+<!-- Search Bar-->
+<div class="search">
+  <input type="text" class="searchTerm" placeholder="Type here to search a user by Id or Name..." [(ngModel)]="query">
+</div>
+
+<div class="users flex-row">
+  <div *ngIf="(userListData | userFilter: query).length === 0; else showUsers ">
+    <div class="search no-records">
+      {{serverError? serverError : 'No Matching Records Found!'}}
+    </div>
+  </div>
+
+
+</div>
+
+<ng-template #showUsers>
+  <ul class="user-list">
+    <li *ngFor="let item of userListData |  userFilter: query">
+      <div class="users">
+        <div>
+          <span> ID - {{item.id}} | </span> {{item.displayName}} ( {{item.givenName}} )
+        </div>
+        <div class="align-right">
+          <button class="button" (click)="openViewDetailsModal(item)">View Details</button>
+        </div>
+
+      </div>
+    </li>
+  </ul>
+</ng-template>
+
+<app-view-details #viewDetails [userDtls] =selectedUser  (reloadPage)="reloadUsers()">
+
+</app-view-details>

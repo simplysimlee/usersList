@@ -1,0 +1,60 @@
+<div #viewDetails class="container">
+    <div class="content">
+        <h2> User Details Page</h2>
+        <form [formGroup]="usersForm">
+
+            <div class="user-data">
+                <div>
+                    ID:
+                </div>
+                <div class="inp-cls">
+                    <input class="form-control inp-cls" id="id" formControlName="id">
+                </div>
+            </div>
+            <div class="user-data">
+                <div>
+                    Display Name*:
+                </div>
+                <div class="">
+                    <input class="form-control inp-cls" id="displayName" formControlName="displayName" required>
+                    <span class="validation-error " *ngIf="( usersForm.controls['displayName'].touched) && usersForm.controls['displayName']['errors']?.['required']">Display Name is required</span>
+                </div>
+
+
+            </div>
+            <div class="user-data">
+                <div>
+                    Given Name:
+                </div>
+                <div class="">
+
+                    <input class="form-control inp-cls" id="givenName" formControlName="givenName">
+                </div>
+            </div>
+            <div class="user-data">
+                <div>
+                    Email*:
+                </div>
+                <div class="">
+
+                    <input class="form-control inp-cls" id="mail" formControlName="mail" email="true" required>
+                    <span class="validation-error" *ngIf="(usersForm.controls['mail'].touched)  && usersForm.controls['mail']['errors']?.['required']">Email is required.</span>
+                      <span class="validation-error" *ngIf="( usersForm.controls['mail'].touched)  && usersForm.controls['mail']['errors']?.['email']">Please enter correct email id.</span> 
+                </div>
+            </div>
+            <div class="user-data">
+                <div>
+                    Details:
+                </div>
+                <div class="">
+                    <textarea class="form-control inp-cls" id="details" formControlName="details">  </textArea>
+                </div>
+            </div>
+        </form>
+        <div class="align-right">
+            <button class='button' (click)="close()">Close</button>
+            <button class='button' type="submit" (click)="onSubmit()">Save</button>
+        </div>
+
+    </div>
+</div>
