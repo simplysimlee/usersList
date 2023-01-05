@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user-interface';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-view-details',
@@ -9,12 +10,15 @@ import { User } from 'src/app/models/user-interface';
 })
 export class ViewDetailsComponent {
   usersForm:FormGroup;
-  @ViewChild('viewDetails', { static: false })
-  modal!: ElementRef;
+  @ViewChild('viewDetails', { static: false })modal!: ElementRef;
   @Input() userDtls!: User;
   @Output() reloadPage = new EventEmitter<string>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder,
+              private readonly localStorageService: LocalStorageService) {
+    /**
+     * Initializing the form builder
+     */
     this.usersForm = this.fb.group({
       id: [{value:'', disabled: true}],
       displayName:['',Validators.required],
@@ -26,17 +30,23 @@ export class ViewDetailsComponent {
   }
 
   ngOnChanges() {
+    /**
+     * When input changes
+     */
    if(this.userDtls) this.rebuildForm();
   }
 
+  /**
+   * Reload the form data
+   */
   rebuildForm(){
-    
+    const { id, displayName, givenName, mail, details } = this.userDtls;
     this.usersForm.reset({
-      id: this.userDtls.id,
-      displayName: this.userDtls.displayName,
-      givenName: this.userDtls.givenName,
-      mail: this.userDtls.mail,
-      details:this.userDtls.details
+      id: id,
+      displayName: displayName,
+      givenName: givenName,
+      mail: mail,
+      details:details
     });
   }
 
@@ -47,12 +57,14 @@ export class ViewDetailsComponent {
   open() {
     this.modal.nativeElement.style.display = 'block';
   }
+
+  /**
+   * On form submit
+   */
   onSubmit(){
     if(this.usersForm.dirty && this.usersForm.valid){
-      // retrive date from ls
-      const userDetails = localStorage.getItem('userslistArray') || '';
-      // parse to JSON fromat
-      const userArray:User[] = JSON.parse(userDetails) || [];
+      // retrive data from local storage
+      const userArray:User[] = this.localStorageService.getItemFromLocalStorage('userslistArray'); 
       // check for value that is updated
       this.updateUserData(userArray);
       //this emitter will reload the user list on home page
@@ -68,13 +80,14 @@ export class ViewDetailsComponent {
   private updateUserData(userArray: User[]) {
     const updatedUser = userArray.find(data => data.id === this.userDtls.id) || null;
     if (updatedUser) {
-      updatedUser['displayName'] = this.usersForm.value.displayName || '';
-      updatedUser['givenName'] = this.usersForm.value.givenName || '';
-      updatedUser['mail'] = this.usersForm.value.mail || '';
-      updatedUser['details'] = this.usersForm.value.details || '';
+      const { displayName, givenName, mail, details } = this.usersForm.value;
+      updatedUser['displayName'] = displayName;
+      updatedUser['givenName'] = givenName;
+      updatedUser['mail'] = mail;
+      updatedUser['details'] = details;
     }
     //update the local storage
-    localStorage.setItem('userslistArray', JSON.stringify(userArray));
+    this.localStorageService.setItemToLocalStorage('userslistArray', userArray);
   }
 
   /**

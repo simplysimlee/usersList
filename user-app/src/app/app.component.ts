@@ -3,6 +3,7 @@ import { HttpService } from './services/http.service';
 import { User } from './models/user-interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ViewDetailsComponent } from './shared/view-details/view-details.component';
+import { LocalStorageService } from './services/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -18,7 +19,8 @@ export class AppComponent {
   openViewDetails!: ViewDetailsComponent;
   selectedUser!: User;
 
-  constructor(private readonly http: HttpService) { }
+  constructor(private readonly http: HttpService,
+              private readonly localStorageService:LocalStorageService) { }
 
   ngOnInit() {
     //Load User List data
@@ -34,21 +36,21 @@ export class AppComponent {
       .subscribe({
         next: (userList: User[]) => {
           if (userList?.length) {
-            localStorage.setItem('userslistArray', JSON.stringify(userList));
+            this.localStorageService.setItemToLocalStorage('userslistArray',userList);
             this.userListData = userList;
             this.serverError = '';
           }
         },
         error: (err: HttpErrorResponse) => {
           this.userListData = [];
-          localStorage.setItem('userslistArray', JSON.stringify([]));
+          this.localStorageService.setItemToLocalStorage('userslistArray',[]);
           this.serverError = err?.status === 404 ? 'Records No Found.' : 'An Error has Occured, Please Connect to Admin.';
         },
       });
   }
 
   reloadUsers(){
-    this.userListData = JSON.parse(localStorage.getItem('userslistArray')||'');
+    this.userListData = this.localStorageService.getItemFromLocalStorage('userslistArray');
   }
 
   /**

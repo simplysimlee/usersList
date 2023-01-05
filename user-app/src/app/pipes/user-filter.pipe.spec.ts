@@ -30,15 +30,15 @@ describe('UserFilterPipe - Positive Test Scenarios', () => {
     }]
 
   it('return [] if user list is empty', () => {
-    expect(pipe.transform([],null)).toBe([]);
+    expect(pipe.transform([],'')).toBe([]);
   });
 
   it('return same value if argument is null', () => {
-    expect(pipe.transform(user,null)).toBe(user);
+    expect(pipe.transform(user,'')).toBe(user);
   });
 
   it('returns a filtered value if ID matches', () => {
-   const actualValue = pipe.transform(user,2);
+   const actualValue = pipe.transform(user,'2');
     expect(actualValue).toBe([{
       "id":2,
       "displayName":"John Two",
@@ -49,7 +49,7 @@ describe('UserFilterPipe - Positive Test Scenarios', () => {
   });
 
   it('returns a filtered value if ID matches', () => {
-    const actualValue = pipe.transform(user,2);
+    const actualValue = pipe.transform(user,'2');
      expect(actualValue).toBe([{
        "id":2,
        "displayName":"John Two",
