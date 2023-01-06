@@ -8,14 +8,11 @@ For responsivness, CSS grid is used.
 On the home page/landing page, user sees the List of User present in the System along with a search bar on the top. User list is retirved from users.json in asset folder and then this is stroed in the local storage.
 
 User can Search about different users persent in the system by their Id or Name. 
-The search bar filters data by ID, given name and display name. This is implemented using a custom pipe know as user-filter.
+The search bar filters data by ID, display name. This is implemented using a custom pipe know as user-filter.
 
 User can view more details and edit the details by clicking on view more button. On clciking view more, a pop over screen comes which is made using reusable angular directive called components. Inside view detail component, reactive form is used display the form data. Form validations such as required field check is also applied to the form.
 
 If user makes any changes to the form and form is in valid state (with no error), we patch the data inside the local storage. And using event emitters we refresh the data in the home page.
-
-
-
 
 
 
