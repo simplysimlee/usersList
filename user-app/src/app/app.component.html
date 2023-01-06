@@ -13,7 +13,7 @@
 
 <ng-template #showUsers>
   <ul class="user-list">
-    <li *ngFor="let item of userListData |  userFilter: query">
+    <li *ngFor="let item of userListData | userFilter: query">
       <div class="users">
         <div><span> ID - {{item.id}} |  </span> {{item.displayName}} </div>
         <div class="align-right">
@@ -24,6 +24,5 @@
   </ul>
 </ng-template>
 
-<app-view-details #viewDetails [userDtls] =selectedUser  (reloadPage)="reloadUsers()">
-
+<app-view-details #viewDetails [userDtls]="selectedUser"  (reloadPage)="reloadUsers()">
 </app-view-details>
