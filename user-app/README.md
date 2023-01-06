@@ -15,6 +15,10 @@ User can view more details and edit the details by clicking on view more button.
 If user makes any changes to the form and form is in valid state (with no error), we patch the data inside the local storage. And using event emitters we refresh the data in the home page.
 
 
+## Git Hub 
+
+The URL of this project is  `https://github.com/simplysimlee/usersList.git`.
+
 
 ## Development server
 
