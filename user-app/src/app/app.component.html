@@ -9,21 +9,16 @@
       {{serverError? serverError : 'No Matching Records Found!'}}
     </div>
   </div>
-
-
 </div>
 
 <ng-template #showUsers>
   <ul class="user-list">
     <li *ngFor="let item of userListData |  userFilter: query">
       <div class="users">
-        <div>
-          <span> ID - {{item.id}} | </span> {{item.displayName}} ( {{item.givenName}} )
-        </div>
+        <div><span> ID - {{item.id}} |  </span> {{item.displayName}} </div>
         <div class="align-right">
           <button class="button" (click)="openViewDetailsModal(item)">View Details</button>
         </div>
-
       </div>
     </li>
   </ul>

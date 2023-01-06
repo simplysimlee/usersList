@@ -2,28 +2,30 @@
     <div class="content">
         <h2> User Details Page</h2>
         <form [formGroup]="usersForm">
+            <!-- ID -->
             <div class="user-data">
                 <div> ID: </div>
                 <div class="input-class"><input class="form-control input-class" id="id" formControlName="id"></div>
             </div>
+            <!-- Display Name -->
             <div class="user-data">
                 <div> Display Name*:</div>
-                <div class="">
+                <div>
                     <input class="form-control input-class" id="displayName" formControlName="displayName" required>
                     <span class="validation-error "
                         *ngIf="( usersForm.controls['displayName'].touched) && usersForm.controls['displayName']['errors']?.['required']">Display
                         Name is required</span>
                 </div>
             </div>
-            <div class="user-data">
+            <!-- Given Name -->
+            <div class="user-data ">
                 <div> Given Name:</div>
-                <div class="">
-                    <input class="form-control input-class" id="givenName" formControlName="givenName">
-                </div>
+                <div><input class="form-control input-class" id="givenName" formControlName="givenName"></div>
             </div>
-            <div class="user-data">
+            <!-- Email -->
+            <div class="user-data email">
                 <div> Email*:</div>
-                <div class="">
+                <div>
                     <input class="form-control input-class" id="mail" formControlName="mail" email="true" required>
                     <span class="validation-error"
                         *ngIf="(usersForm.controls['mail'].touched)  && usersForm.controls['mail']['errors']?.['required']">Email
@@ -33,17 +35,17 @@
                         enter correct email id.</span>
                 </div>
             </div>
+            <!-- Details -->
             <div class="user-data">
                 <div> Details:</div>
-                <div class="">
-                    <textarea class="form-control input-class" id="details" formControlName="details">  </textArea>
-                </div>
+                <div> <textarea class="form-control input-class" id="details" formControlName="details"> </textArea> </div>
             </div>
         </form>
+        <!--buttons-->
         <div class="align-right">
-            <button class='button' (click)="close()">Close</button>
-            <button class='button' type="submit" (click)="onSubmit()">Save</button>
+            <button class='button' (click)="cancel()">Close</button>
+            <button class='button' [disabled]="usersForm.invalid ? 'disabled': null"
+                [ngClass]="{'disable-save': usersForm.invalid}" type="submit" (click)="onSubmit()">Save</button>
         </div>
     </div>
 </div>
-

@@ -9,44 +9,44 @@ import { LocalStorageService } from 'src/app/services/local-storage.service';
   styleUrls: ['./view-details.component.css']
 })
 export class ViewDetailsComponent {
-  usersForm:FormGroup;
-  @ViewChild('viewDetails', { static: false })modal!: ElementRef;
+  usersForm: FormGroup;
+  @ViewChild('viewDetails', { static: false }) modal!: ElementRef;
   @Input() userDtls!: User;
   @Output() reloadPage = new EventEmitter<string>();
 
   constructor(private readonly fb: FormBuilder,
-              private readonly localStorageService: LocalStorageService) {
+    private readonly localStorageService: LocalStorageService) {
     /**
      * Initializing the form builder
      */
     this.usersForm = this.fb.group({
-      id: [{value:'', disabled: true}],
-      displayName:['',Validators.required],
+      id: [{ value: '', disabled: true }],
+      displayName: ['', Validators.required],
       givenName: [''],
       mail: ['', [Validators.required, Validators.email]],
-      details:['']
+      details: ['']
     });
-    
+
   }
 
   ngOnChanges() {
     /**
      * When input changes
      */
-   if(this.userDtls) this.rebuildForm();
+    if (this.userDtls) this.rebuildForm();
   }
 
   /**
    * Reload the form data
    */
-  rebuildForm(){
+  rebuildForm() {
     const { id, displayName, givenName, mail, details } = this.userDtls;
     this.usersForm.reset({
-      id: id,
+      id: id ,
       displayName: displayName,
       givenName: givenName,
       mail: mail,
-      details:details
+      details: details
     });
   }
 
@@ -61,23 +61,25 @@ export class ViewDetailsComponent {
   /**
    * On form submit
    */
-  onSubmit(){
-    if(this.usersForm.dirty && this.usersForm.valid){
+  onSubmit() {
+   
+    if (this.usersForm.dirty) {
       // retrive data from local storage
-      const userArray:User[] = this.localStorageService.getItemFromLocalStorage('userslistArray'); 
+      const userArray: User[] = this.localStorageService.getItemFromLocalStorage('userslistArray');
       // check for value that is updated
       this.updateUserData(userArray);
       //this emitter will reload the user list on home page
       this.reloadPage.emit();
+      
     }
-     this.close();
+    this.close();
   }
 
   /**
    * This methods updates the changed data to LS
    * @param userArray 
    */
-  private updateUserData(userArray: User[]) {
+  updateUserData(userArray: User[]) {
     const updatedUser = userArray.find(data => data.id === this.userDtls.id) || null;
     if (updatedUser) {
       const { displayName, givenName, mail, details } = this.usersForm.value;
@@ -88,6 +90,13 @@ export class ViewDetailsComponent {
     }
     //update the local storage
     this.localStorageService.setItemToLocalStorage('userslistArray', userArray);
+  }
+  /**
+   * Cancel Any changes made in the form and close the modal
+   */
+  cancel(){
+    this.rebuildForm();
+    this.close();
   }
 
   /**

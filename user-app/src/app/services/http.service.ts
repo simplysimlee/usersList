@@ -21,7 +21,7 @@ export class HttpService {
     return this.http.get<UserObject>(APIURLS.USERSDATA)
       .pipe(
         // transform data object of type UserObject and return USER array
-        map(data => data?.users || []),
+        map(data => data?.users ),
         catchError((err) => throwError(() => err))
       );
   }

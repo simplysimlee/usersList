@@ -12,8 +12,8 @@ export class LocalStorageService {
    * @param id -string
    * @param data - User []
    */
-  setItemToLocalStorage(id: string, data: User[]) {
-    const stringifyData = JSON.stringify(data);
+  setItemToLocalStorage(id: string, data: User[] | null) {
+    const stringifyData = data ? JSON.stringify(data) : '';
     localStorage.setItem(id, stringifyData);
   };
   /**
@@ -21,8 +21,9 @@ export class LocalStorageService {
    * @param id 
    * @returns User[]
    */
-  getItemFromLocalStorage(id: string): User[] {
-    return JSON.parse(localStorage.getItem(id) || '');
+  getItemFromLocalStorage(id: string): User[]|[] {
+    const stringifiedData = localStorage.getItem(id);
+    return stringifiedData ? JSON.parse(stringifiedData) : [];
   };
 
 }
